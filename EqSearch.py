@@ -161,17 +161,30 @@ def searcheq():
         for key, value in list(searchDict.items()):
             e = re.search('Genres allowed\: (.*)', value)
             f = re.search('Classes allowed\: (.*)', value)
+            g = re.search(r'Special properties\: (.*)', value)
             if e is not None:
                 e = re.search('Genres allowed\: (.*)', value).group(1)
             if f is not None:
                 f = re.search('Classes allowed\: (.*)', value).group(1)
-            if e is not None or f is not None:
-                if e is None:
-                    e = "nil"
-                if f is None:
-                    f = "nil"
-                if genreSearch not in e and classSearch not in f:
-                    del searchDict[key]
+            if classSearch == "Barbarian":
+                if g is not None:
+                    g = re.search(r'Special properties\: (.*)', value).group(1)
+                    if "magic" in g or e is not None or f is not None:
+                        if e is None:
+                            e = "nil"
+                        if f is None:
+                            f = "nil"
+                        del searchDict[key]
+            else:
+                if e is not None or f is not None:
+                    if e is None:
+                        e = "nil"
+                    if f is None:
+                        f = "nil"
+                    if e != "nil" and f != "nil":
+                        if genreSearch not in e and classSearch not in f:
+                            del searchDict[key]
+                
 
     #search for align and prune
     if alignSearch is not None:
@@ -544,7 +557,7 @@ def wiki_open():
         wikiLink = rest + ', ' + first
         wikiLink = wikiLink.replace(" ","_")
     else: wikiLink = itemName
-    webbrowser.open_new_tab('https://rodpedia.realmsofdespair.info/wiki/' + wikiLink)
+    webbrowser.open_new_tab('http://wiki.inconnu.org/index.php/' + wikiLink)
 
 menu = Menu(tearoff=0)
 menu.add_command(label=u'View on Wiki', command=wiki_open)
