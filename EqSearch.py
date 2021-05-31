@@ -557,7 +557,7 @@ def wiki_open():
         wikiLink = rest + ', ' + first
         wikiLink = wikiLink.replace(" ","_")
     else: wikiLink = itemName
-    webbrowser.open_new_tab('http://wiki.inconnu.org/index.php/' + wikiLink)
+    webbrowser.open_new_tab('http://rodpedia.realmsofdespair.info/wiki/' + wikiLink)
 
 menu = Menu(tearoff=0)
 menu.add_command(label=u'View on Wiki', command=wiki_open)
