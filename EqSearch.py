@@ -175,13 +175,14 @@ def searcheq():
 
     #prune magic items if barb
     if classSearch == "Barbarian":
-        g = re.search(r'Special properties\: (.*)', value)
-        if g is not None:
-            g = re.search(r'Special properties\: (.*)', value).group(1)
-        if g is None:
-            g = "nil"
-        if "magic" in g:
-            del searchDict[key]                    
+        for key, value in list(searchDict.items()):
+            g = re.search(r'Special properties\: (.*)', value)
+            if g is not None:
+                g = re.search(r'Special properties\: (.*)', value).group(1)
+            if g is None:
+                g = "nil"
+            if "magic" in g:
+                del searchDict[key]                    
                 
 
     #search for align and prune
