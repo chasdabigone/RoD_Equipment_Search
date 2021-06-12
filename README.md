@@ -1,6 +1,7 @@
 # RoD_Equipment_Search
 
 requires python3 to run
+you can find it at https://www.python.org/downloads/ and also on the windows store
 
 must have Equip_DB.txt in same folder as EqSearch.py or EqSearch.exe
 
