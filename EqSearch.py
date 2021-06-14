@@ -29,6 +29,7 @@ classSearch = None
 raceSearch = None
 alignSearch = None
 levelSearch = None
+minlevelSearch = None
 hpSearch = None
 drSearch = None
 hrSearch = None
@@ -64,6 +65,7 @@ def searcheq():
     raceSearch = None
     alignSearch = None
     levelSearch = None
+    minlevelSearch = None
     hpSearch = None
     drSearch = None
     hrSearch = None
@@ -77,6 +79,8 @@ def searcheq():
     lckSearch = None
     wearSearch = "none"
     statSearch = None
+    statSearch2 = None
+    statSearch3 = None
     acSearch = None
     keywordSearch = None
     searchResult = []
@@ -96,8 +100,11 @@ def searcheq():
         if alignclick.get() != "none":
             alignSearch = alignclick.get()
     if levelEntry.get() != "":
-        if levelEntry.get() < "50":
+        if int(levelEntry.get()) < 50:
             levelSearch = int(levelEntry.get())
+    if minlevelEntry.get() != "":
+        if int(minlevelEntry.get()) < 50:
+            minlevelSearch = int(minlevelEntry.get())
     if acEntry.get() != "":
         if acEntry.get() != "0":
             acSearch = int(acEntry.get())
@@ -105,6 +112,14 @@ def searcheq():
         if statEntry.get() != "0":
             statSearch = int(statEntry.get())
             statType = statclick.get()
+    if statEntry2.get() != "":
+        if statEntry2.get() != "0":
+            statSearch2 = int(statEntry2.get())
+            statType2 = statclick2.get()
+    if statEntry3.get() != "":
+        if statEntry3.get() != "0":
+            statSearch3 = int(statEntry3.get())
+            statType3 = statclick3.get()
     if manaEntry.get() != "":
         if manaEntry.get() != "0":
             manaSearch = int(manaEntry.get())
@@ -211,6 +226,15 @@ def searcheq():
                 if levelSearch <= int(e):
                     del searchDict[key]
 
+    #search and prune for minimum level
+    if minlevelSearch is not None:
+        for key, value in list(searchDict.items()):
+            e = re.search(r'It is a level (\d+)', value)
+            if e is not None:
+                e = re.search(r'It is a level (\d+)', value).group(1)
+                if minlevelSearch >= int(e):
+                    del searchDict[key]
+
     #search and prune for pkill items
     if pkillCheck.get() == 0:
         for key, value in list(searchDict.items()):
@@ -314,7 +338,9 @@ def searcheq():
                 e = re.search(r'Affects hit roll by (\d+)', value).group(1)
                 if int(e) < hrSearch:
                     del searchDict[key]
-    
+
+    #FIRST STAT SEARCH SECTION
+                    
     #search for STR and prune
     if statSearch is not None:
         if statType == "str":
@@ -399,6 +425,176 @@ def searcheq():
                     if int(e) < statSearch:
                         del searchDict[key]
 
+    #SECOND STAT SEARCH SECTION
+    #search for STR and prune
+    if statSearch2 is not None:
+        if statType2 == "str":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects strength by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects strength by (\d+)', value).group(1)
+                    if int(e) < statSearch2:
+                        del searchDict[key]
+
+    #search for DEX and prune
+    if statSearch2 is not None:
+        if statType2 == "dex":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects dexterity by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects dexterity by (\d+)', value).group(1)
+                    if int(e) < statSearch2:
+                        del searchDict[key]
+
+    #search for WIS and prune
+    if statSearch2 is not None:
+        if statType2 == "wis":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects wisdom by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects wisdom by (\d+)', value).group(1)
+                    if int(e) < statSearch2:
+                        del searchDict[key]
+    
+    #search for INT and prune
+    if statSearch2 is not None:
+        if statType2 == "int":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects intelligence by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects intelligence by (\d+)', value).group(1)
+                    if int(e) < statSearch2:
+                        del searchDict[key]
+
+    #search for CON and prune
+    if statSearch2 is not None:
+        if statType2 == "con":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects constitution by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects constitution by (\d+)', value).group(1)
+                    if int(e) < statSearch2:
+                        del searchDict[key]
+
+    #search for CHA and prune
+    if statSearch2 is not None:
+        if statType2 == "cha":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects charisma by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects charisma by (\d+)', value).group(1)
+                    if int(e) < statSearch2:
+                        del searchDict[key]
+
+    #search for LCK and prune
+    if statSearch2 is not None:
+        if statType2 == "lck":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects luck by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects luck by (\d+)', value).group(1)
+                    if int(e) < statSearch2:
+                        del searchDict[key]
+
+    #THIRD STAT SEARCH SECTION
+    #search for STR and prune
+    if statSearch3 is not None:
+        if statType3 == "str":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects strength by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects strength by (\d+)', value).group(1)
+                    if int(e) < statSearch3:
+                        del searchDict[key]
+
+    #search for DEX and prune
+    if statSearch3 is not None:
+        if statType3 == "dex":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects dexterity by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects dexterity by (\d+)', value).group(1)
+                    if int(e) < statSearch3:
+                        del searchDict[key]
+
+    #search for WIS and prune
+    if statSearch3 is not None:
+        if statType3 == "wis":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects wisdom by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects wisdom by (\d+)', value).group(1)
+                    if int(e) < statSearch3:
+                        del searchDict[key]
+    
+    #search for INT and prune
+    if statSearch3 is not None:
+        if statType3 == "int":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects intelligence by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects intelligence by (\d+)', value).group(1)
+                    if int(e) < statSearch3:
+                        del searchDict[key]
+
+    #search for CON and prune
+    if statSearch3 is not None:
+        if statType3 == "con":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects constitution by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects constitution by (\d+)', value).group(1)
+                    if int(e) < statSearch3:
+                        del searchDict[key]
+
+    #search for CHA and prune
+    if statSearch3 is not None:
+        if statType3 == "cha":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects charisma by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects charisma by (\d+)', value).group(1)
+                    if int(e) < statSearch3:
+                        del searchDict[key]
+
+    #search for LCK and prune
+    if statSearch3 is not None:
+        if statType3 == "lck":
+            for key, value in list(searchDict.items()):
+                e = re.search(r'Affects luck by (\d+)', value)
+                if e is None:
+                    del searchDict[key]
+                else:
+                    e = re.search(r'Affects luck by (\d+)', value).group(1)
+                    if int(e) < statSearch3:
+                        del searchDict[key]
+                        
     #parse searchDict to display results
        
     searchList = searchDict.keys()
@@ -485,10 +681,10 @@ keywordEntry.grid(row=4, column=2, sticky=W)
 pkillText = StringVar()
 pkillText.set("Include Pkill?")
 pkillDir = Label(root, textvariable=pkillText, height=1)
-pkillDir.grid(row=5, column=1, sticky=E)
+pkillDir.grid(row=7, column=3, sticky=E)
 pkillCheck = IntVar()
 pkBox = Checkbutton(root, text='', variable=pkillCheck, onvalue=1, offvalue=0)
-pkBox.grid(row=5, column=2, sticky=W)
+pkBox.grid(row=7, column=4, sticky=W)
     
 #level entry box
 levelText = StringVar()
@@ -498,45 +694,69 @@ levelDir.grid(row=1, column=3, sticky=E)
 levelEntry = Entry(root, width=3)
 levelEntry.grid(row=1, column=4, sticky=W)
 
+#minlevel entry box
+minlevelText = StringVar()
+minlevelText.set("Min Level")
+minlevelDir = Label(root, textvariable=minlevelText, height = 1)
+minlevelDir.grid(row=2, column=3, sticky=E)
+minlevelEntry = Entry(root, width=3)
+minlevelEntry.grid(row=2, column=4, sticky=W)
+
 #AC entry box
 acText = StringVar()
 acText.set("Armor AC")
 acDir = Label(root, textvariable=acText, height = 1)
-acDir.grid(row=2, column=3, sticky=E)
+acDir.grid(row=3, column=3, sticky=E)
 acEntry = Entry(root, width=3)
-acEntry.grid(row=2, column=4, sticky=W)
+acEntry.grid(row=3, column=4, sticky=W)
 
 #hp entry box
 hpText = StringVar()
 hpText.set("Hitpoints")
 hpDir = Label(root, textvariable=hpText, height = 1)
-hpDir.grid(row=3, column=3, sticky=E)
+hpDir.grid(row=4, column=3, sticky=E)
 hpEntry = Entry(root, width=3)
-hpEntry.grid(row=3, column=4, sticky=W)
+hpEntry.grid(row=4, column=4, sticky=W)
 
 #mana entry box
 manaText = StringVar()
 manaText.set("Mana")
 manaDir = Label(root, textvariable=manaText, height = 1)
-manaDir.grid(row=4,column=3, sticky=E)
+manaDir.grid(row=5,column=3, sticky=E)
 manaEntry= Entry(root, width=3)
-manaEntry.grid(row=4,column=4, sticky=W)
+manaEntry.grid(row=5,column=4, sticky=W)
 
 #stat selection button #1
 statclick = StringVar()
 statclick.set("str")
 statSelect = OptionMenu(root, statclick, *statList)
-statSelect.grid(row=6, column=3, sticky=E)
+statSelect.grid(row=5, column=1, sticky=E)
 statEntry = Entry(root, width=3)
-statEntry.grid(row=6, column=4, sticky=W)
+statEntry.grid(row=5, column=2, sticky=W)
+
+#stat selection button #2
+statclick2 = StringVar()
+statclick2.set("str")
+statSelect2 = OptionMenu(root, statclick2, *statList)
+statSelect2.grid(row=6, column=1, sticky=E)
+statEntry2 = Entry(root, width=3)
+statEntry2.grid(row=6, column=2, sticky=W)
+
+#stat selection button #3
+statclick3 = StringVar()
+statclick3.set("str")
+statSelect3 = OptionMenu(root, statclick3, *statList)
+statSelect3.grid(row=7, column=1, sticky=E)
+statEntry3 = Entry(root, width=3)
+statEntry3.grid(row=7, column=2, sticky=W)
 
 #DR entry box
 drText = StringVar()
 drText.set("DamRoll")
 drDir = Label(root, textvariable=drText, height = 1)
-drDir.grid(row=5,column=3, sticky=E)
+drDir.grid(row=6,column=3, sticky=E)
 drEntry= Entry(root, width=3)
-drEntry.grid(row=5,column=4, sticky=W)
+drEntry.grid(row=6,column=4, sticky=W)
 
 #display number of items in DB
 itemNum = StringVar()
