@@ -223,7 +223,7 @@ def searcheq():
             e = re.search(r'It is a level (\d+)', value)
             if e is not None:
                 e = re.search(r'It is a level (\d+)', value).group(1)
-                if levelSearch <= int(e):
+                if levelSearch < int(e):
                     del searchDict[key]
 
     #search and prune for minimum level
@@ -232,7 +232,7 @@ def searcheq():
             e = re.search(r'It is a level (\d+)', value)
             if e is not None:
                 e = re.search(r'It is a level (\d+)', value).group(1)
-                if minlevelSearch >= int(e):
+                if minlevelSearch > int(e):
                     del searchDict[key]
 
     #search and prune for pkill items
