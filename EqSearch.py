@@ -787,7 +787,7 @@ def wiki_open():
         wikiLink = rest + ', ' + first
         wikiLink = wikiLink.replace(" ","_")
     else: wikiLink = itemName
-    webbrowser.open_new_tab('http://rodpedia.realmsofdespair.info/' + wikiLink)
+    webbrowser.open_new_tab('http://rodpedia.realmsofdespair.info/wiki/' + wikiLink)
 
 def copy_text():
     root.clipboard_clear()
