@@ -52,7 +52,7 @@ searchDict = eqDict.copy()
 #GUI setup
 root = Tk()
 root.title('Realms of Despair Equipment Search by Moe')
-root.geometry("500x700")
+root.geometry("500x750")
 
 
 #dropdown class select
@@ -126,6 +126,9 @@ def searcheq():
     if drEntry.get() != "":
         if drEntry.get() != "0":
             drSearch = int(drEntry.get())
+    if hrEntry.get() != "":
+        if hrEntry.get() != "0":
+            hrSearch = int(hrEntry.get())
     
     #class selection variables defined
     if classclick.get() != "none":
@@ -681,10 +684,10 @@ keywordEntry.grid(row=4, column=2, sticky=W)
 pkillText = StringVar()
 pkillText.set("Include Pkill?")
 pkillDir = Label(root, textvariable=pkillText, height=1)
-pkillDir.grid(row=7, column=3, sticky=E)
+pkillDir.grid(row=8, column=3, sticky=E)
 pkillCheck = IntVar()
 pkBox = Checkbutton(root, text='', variable=pkillCheck, onvalue=1, offvalue=0)
-pkBox.grid(row=7, column=4, sticky=W)
+pkBox.grid(row=8, column=4, sticky=W)
     
 #level entry box
 levelText = StringVar()
@@ -758,6 +761,14 @@ drDir.grid(row=6,column=3, sticky=E)
 drEntry= Entry(root, width=3)
 drEntry.grid(row=6,column=4, sticky=W)
 
+#HR entry box
+hrText = StringVar()
+hrText.set("HitRoll")
+hrDir = Label(root, textvariable=hrText, height = 1)
+hrDir.grid(row=7,column=3, sticky=E)
+hrEntry= Entry(root, width=3)
+hrEntry.grid(row=7,column=4, sticky=W)
+
 #display number of items in DB
 itemNum = StringVar()
 itemNum.set("Searching " + str(len(eqDict)) + " items")
@@ -776,10 +787,16 @@ def wiki_open():
         wikiLink = rest + ', ' + first
         wikiLink = wikiLink.replace(" ","_")
     else: wikiLink = itemName
-    webbrowser.open_new_tab('http://rodpedia.realmsofdespair.info/wiki/' + wikiLink)
+    webbrowser.open_new_tab('http://rodpedia.realmsofdespair.info/' + wikiLink)
+
+def copy_text():
+    root.clipboard_clear()
+    root.clipboard_append(itemName)
+    root.update()
 
 menu = Menu(tearoff=0)
 menu.add_command(label=u'View on Wiki', command=wiki_open)
+menu.add_command(label=u'Copy', command=copy_text)
 
 def context_menu(event, menu):
     menuwidget = event.widget
