@@ -2,8 +2,6 @@ import re
 from tkinter import *
 import webbrowser
 
-
-
 #create dictionary from database file
 result = []
 with open("Equip_DB.txt", "r", encoding='utf-8') as infile:
@@ -18,7 +16,7 @@ eqDict ={k: "".join(v) for k, v in result}   #Form required dictionary.
 #define class list
 classList = ["none","Augurer","Barbarian","Bladesinger","Cleric","Druid","Fathomer","Mage","Nephandi","Paladin","Ranger","Thief","Vampire","Warrior"]
 # define race list
-raceList = ["Vampire", "Human", "Dwarf", "Elf", "Halfling", "Pixie", "Half-Elf", "Half-Ogre", "Half-Troll", "Half-Orc", "Gith", "Sea-Elf", "Drow", "Lizardman", "Gnome", "Dragonborn", "Tiefling"]
+raceList = ["Human", "Dwarf", "Elf", "Halfling", "Pixie", "Half-Elf", "Half-Ogre", "Half-Troll", "Half-Orc", "Gith", "Sea-Elf", "Drow", "Lizardman", "Gnome", "Dragonborn", "Tiefling"]
 #define wearlocs list
 wearList = ["none","wield","light","finger","neck","head","legs","feet","hands","arms","eyes","ears","body","about","shield","hold","wrist","waist","face","ankle","back"]
 #define align list
@@ -853,10 +851,6 @@ def context_menu(event, menu):
         return
     menuitem = menuwidget.get(menuindex)
     menu.post(event.x_root, event.y_root)
-
-
-
-
 
 root.mainloop()
 
