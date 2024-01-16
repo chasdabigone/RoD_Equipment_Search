@@ -17,6 +17,8 @@ eqDict ={k: "".join(v) for k, v in result}   #Form required dictionary.
 
 #define class list
 classList = ["none","Augurer","Barbarian","Bladesinger","Cleric","Druid","Fathomer","Mage","Nephandi","Paladin","Ranger","Thief","Vampire","Warrior"]
+# define race list
+raceList = ["Vampire", "Human", "Dwarf", "Elf", "Halfling", "Pixie", "Half-Elf", "Half-Ogre", "Half-Troll", "Half-Orc", "Gith", "Sea-Elf", "Drow", "Lizardman", "Gnome", "Dragonborn", "Tiefling"]
 #define wearlocs list
 wearList = ["none","wield","light","finger","neck","head","legs","feet","hands","arms","eyes","ears","body","about","shield","hold","wrist","waist","face","ankle","back"]
 #define align list
@@ -24,6 +26,8 @@ alignList = ["none","evil","neut","good"]
 #define stat list
 statList = ["str","int","wis","dex","cha","con","lck"]
 #define search variables
+valueOption = ""
+valueSearch = None
 genreSearch = None
 classSearch = None
 raceSearch = None
@@ -60,6 +64,8 @@ root.geometry("500x750")
 def searcheq():
 
     #erase variables
+    valueOption = ""
+    valueSearch = None
     genreSearch = None
     classSearch = None
     raceSearch = None
@@ -87,6 +93,12 @@ def searcheq():
     searchDict = eqDict.copy()
 
     #set selected variables from GUI
+    if raceclick.get() is not None:
+        raceSearch = raceclick.get()
+    if valueEntry.get() != "":
+        valueOption = valueclick.get()
+    if valueEntry.get() != "":
+        valueSearch = int(valueEntry.get())
     if hpEntry.get() != "":
         if hpEntry.get() != "0":
             hpSearch = int(hpEntry.get())
@@ -220,6 +232,19 @@ def searcheq():
                 if keywordSearch not in key.lower() and keywordSearch not in value.lower():
                     del searchDict[key]
 
+    # search and prune for value
+    if valueSearch is not None:
+        if valueSearch != "":
+            for key,value in list(searchDict.items()):
+                e = re.search(r'has a gold value of ([0-9]+).', value)
+                if e is not None:
+                    e = re.search(r'has a gold value of ([0-9]+).', value).group(1)
+                    if valueOption==">" and valueSearch > int(e):
+                        del searchDict[key]
+                    elif valueOption=="<" and valueSearch < int(e):
+                        del searchDict[key]
+                
+
     #search and prune for max level
     if levelSearch is not None:
         for key, value in list(searchDict.items()):
@@ -229,7 +254,7 @@ def searcheq():
                 if levelSearch < int(e):
                     del searchDict[key]
 
-    #search and prune for minimum level
+    # search and prune for minimum level
     if minlevelSearch is not None:
         for key, value in list(searchDict.items()):
             e = re.search(r'It is a level (\d+)', value)
@@ -238,7 +263,7 @@ def searcheq():
                 if minlevelSearch > int(e):
                     del searchDict[key]
 
-    #search and prune for pkill items
+    # search and prune for pkill items
     if pkillCheck.get() == 0:
         for key, value in list(searchDict.items()):
             e = re.search(r'Special properties\: (.*)', value)
@@ -280,6 +305,7 @@ def searcheq():
 
     #search for races and prune
     if raceSearch is not None:
+        print ("race ", raceSearch)
         for key, value in list(searchDict.items()):
             e = re.search('Races allowed\: (.*)', value)
             if e is not None:
@@ -652,33 +678,43 @@ classclick.set("")
 classSelect = OptionMenu(root, classclick, *classList)
 classSelect.grid(row=1, column=2, sticky=W)
 
+#race selection button    
+raceText = StringVar()
+raceText.set("Race")
+raceDir = Label(root, textvariable=raceText, height = 1)
+raceDir.grid(row=2, column=1, sticky=E)
+raceclick = StringVar()
+raceclick.set("")
+raceSelect = OptionMenu(root, raceclick, *raceList)
+raceSelect.grid(row=2, column=2, sticky=W)
+
 #wearloc selection button
 wearText = StringVar()
 wearText.set("Wear Loc")
 wearDir = Label(root, textvariable=wearText, height = 1)
-wearDir.grid(row=2, column=1, sticky=E)
+wearDir.grid(row=3, column=1, sticky=E)
 wearclick = StringVar()
 wearclick.set("")
 wearSelect = OptionMenu(root, wearclick, *wearList)
-wearSelect.grid(row=2, column=2, sticky=W)
+wearSelect.grid(row=3, column=2, sticky=W)
 
 #align selection button
 alignText = StringVar()
 alignText.set("Align")
 alignDir = Label(root, textvariable=alignText, height = 1)
-alignDir.grid(row=3, column=1, sticky=E)
+alignDir.grid(row=4, column=1, sticky=E)
 alignclick = StringVar()
 alignclick.set("")
 alignSelect = OptionMenu(root, alignclick, *alignList)
-alignSelect.grid(row=3, column=2, sticky=W)
+alignSelect.grid(row=4, column=2, sticky=W)
 
 #wildcard keyword search
 keywordText = StringVar()
 keywordText.set("Keyword")
 keywordDir = Label(root, textvariable=keywordText, height=1)
-keywordDir.grid(row=4, column=1, sticky=E)
+keywordDir.grid(row=5, column=1, sticky=E)
 keywordEntry = Entry(root, width=15)
-keywordEntry.grid(row=4, column=2, sticky=W)
+keywordEntry.grid(row=5, column=2, sticky=W)
 
 #pkill item checkbox
 pkillText = StringVar()
@@ -733,25 +769,37 @@ manaEntry.grid(row=5,column=4, sticky=W)
 statclick = StringVar()
 statclick.set("str")
 statSelect = OptionMenu(root, statclick, *statList)
-statSelect.grid(row=5, column=1, sticky=E)
+statSelect.grid(row=6, column=1, sticky=E)
 statEntry = Entry(root, width=3)
-statEntry.grid(row=5, column=2, sticky=W)
+statEntry.grid(row=6, column=2, sticky=W)
 
 #stat selection button #2
 statclick2 = StringVar()
 statclick2.set("str")
 statSelect2 = OptionMenu(root, statclick2, *statList)
-statSelect2.grid(row=6, column=1, sticky=E)
+statSelect2.grid(row=7, column=1, sticky=E)
 statEntry2 = Entry(root, width=3)
-statEntry2.grid(row=6, column=2, sticky=W)
+statEntry2.grid(row=7, column=2, sticky=W)
 
 #stat selection button #3
 statclick3 = StringVar()
 statclick3.set("str")
 statSelect3 = OptionMenu(root, statclick3, *statList)
-statSelect3.grid(row=7, column=1, sticky=E)
+statSelect3.grid(row=8, column=1, sticky=E)
 statEntry3 = Entry(root, width=3)
-statEntry3.grid(row=7, column=2, sticky=W)
+statEntry3.grid(row=8, column=2, sticky=W)
+
+# value selection buttons
+valueLabel = StringVar()
+valueLabel.set("Value")
+valueclick = StringVar()
+valueclick.set(">")
+valueLabel = Label(root, textvariable=valueLabel, height = 1)
+valueLabel.grid(row=9, column=1)
+valueSelect = OptionMenu(root, valueclick, *[">", "<"])
+valueSelect.grid(row=9, column=1, sticky=E)
+valueEntry = Entry(root, width=10)
+valueEntry.grid(row=9, column=2, sticky=W)
 
 #DR entry box
 drText = StringVar()
@@ -779,7 +827,6 @@ itemDir.grid(row=11,column=1, sticky=E)
 searchButton = Button(root, text="Search", command=searcheq).grid(row=11, column=4, sticky=E)
 
 #right click on results to go to web page
-#aqua = root.tk.call('tk', 'windowingsystem') == 'aqua'
 def wiki_open():
     global wikiLink
     first, rest = itemName.split(None, 1)
