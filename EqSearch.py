@@ -16,7 +16,7 @@ eqDict ={k: "".join(v) for k, v in result}   #Form required dictionary.
 #define class list
 classList = ["none","Augurer","Barbarian","Bladesinger","Cleric","Druid","Fathomer","Mage","Nephandi","Paladin","Ranger","Thief","Vampire","Warrior"]
 # define race list
-raceList = ["Human", "Dwarf", "Elf", "Halfling", "Pixie", "Half-Elf", "Half-Ogre", "Half-Troll", "Half-Orc", "Gith", "Sea-Elf", "Drow", "Lizardman", "Gnome", "Dragonborn", "Tiefling"]
+raceList = ["none", "Human", "Dwarf", "Elf", "Halfling", "Pixie", "Half-Elf", "Half-Ogre", "Half-Troll", "Half-Orc", "Gith", "Sea-Elf", "Drow", "Lizardman", "Gnome", "Dragonborn", "Tiefling"]
 #define wearlocs list
 wearList = ["none","wield","light","finger","neck","head","legs","feet","hands","arms","eyes","ears","body","about","shield","hold","wrist","waist","face","ankle","back"]
 #define align list
