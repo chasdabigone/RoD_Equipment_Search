@@ -303,12 +303,13 @@ def searcheq():
 
     #search for races and prune
     if raceSearch is not None:
-        for key, value in list(searchDict.items()):
-            e = re.search('Races allowed\: (.*)', value)
-            if e is not None:
-                e = re.search('Races allowed\: (.*)', value).group(1)
-                if raceSearch not in e:
-                    del searchDict[key]
+        if raceSearch != "none":
+            for key, value in list(searchDict.items()):
+                e = re.search('Races allowed\: (.*)', value)
+                if e is not None:
+                    e = re.search('Races allowed\: (.*)', value).group(1)
+                    if raceSearch not in e:
+                        del searchDict[key]
                                         
     #search for hp and prune
     if hpSearch is not None:
