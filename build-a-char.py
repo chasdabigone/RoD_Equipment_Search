@@ -535,6 +535,8 @@ def optimize_equipment(stat_to_optimize):
         items_failed_race = 0
         items_failed_stat = 0
         items_failed_pk = 0  # Counter for items failed due to pk filter
+        items_failed_two_handed = 0  # Counter for items failed due to two-handed property
+        items_failed_magic = 0  # Counter for items failed due to magic property
         
         for key, value in eqDict.items():
             items_checked += 1
@@ -547,6 +549,14 @@ def optimize_equipment(stat_to_optimize):
             
             if not pk_filter and 'pkill' in value.lower():
                 items_failed_pk += 1
+                continue
+            
+            if 'two-handed' in value.lower():
+                items_failed_two_handed += 1
+                continue
+            
+            if selected_class == "Barbarian" and 'magic' in value.lower():
+                items_failed_magic += 1
                 continue
             
             wear_locations = re.findall(r'Locations it can be worn:\s*(.*)', value)
@@ -629,6 +639,8 @@ def optimize_equipment(stat_to_optimize):
             print(f"  Items failed race restriction: {items_failed_race}")
             print(f"  Items failed {stat_to_optimize} stat: {items_failed_stat}")
             print(f"  Items failed pk filter: {items_failed_pk}")
+            print(f"  Items failed two-handed filter: {items_failed_two_handed}")
+            print(f"  Items failed magic property: {items_failed_magic}")
     
     return optimized_equipment
 
