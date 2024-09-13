@@ -237,7 +237,7 @@ def optimize_equipment(stat_to_optimize, debug=False):
                 print(f"Stat value for {stat_to_optimize}: {stat_value}")
                 print(f"Best stat value so far: {best_stat_value}")
             
-            if stat_value == 0:
+            if stat_value <= 0:  # Exclude items with negative or zero values for the given stat
                 items_failed_stat += 1
                 continue
             
