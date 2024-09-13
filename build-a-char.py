@@ -493,7 +493,7 @@ if __name__ == '__main__':
     optimize_var.set("hp")  # default value
     optimize_menu = tk.OptionMenu(char_window, optimize_var, "hp", "mana", "damage roll", "hit roll")
     optimize_menu.grid(row=35, column=2, padx=5, pady=0, sticky='e')
-    optimize = tk.Button(char_window, text='Optimize', command=optimize_and_load)
+    optimize = tk.Button(char_window, text='Maximize', command=optimize_and_load)
     optimize.grid(row=35, column=3, padx=5, pady=0)
 
     # Move class, race, and alignment selection to the left side
