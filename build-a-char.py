@@ -489,7 +489,7 @@ def save_json(entries):
         json.dump(equip, f)
 
 
-def optimize_equipment(stat_to_optimize):
+def optimize_equipment(stat_to_optimize, debug=True):
     optimized_equipment = {}
     filled_base_locs = set()
     used_unique_items = set()
@@ -607,14 +607,25 @@ def optimize_equipment(stat_to_optimize):
             for match in stat_matches:
                 stat_value += int(match)
             
-            if stat_to_optimize == "damage roll":
-                hr_matches = re.findall(r'Affects hit roll by (-?\d+)', value)
-                for match in hr_matches:
-                    stat_value += int(match)
-            elif stat_to_optimize == "hp":
-                hp_matches = re.findall(r'Affects hp by (-?\d+)', value)
-                for match in hp_matches:
-                    stat_value += int(match)
+            # Handle conditional affects
+            conditional_stat_value = 0
+            conditional_matches = re.findall(r'Affects {} by (-?\d+) if (class|genre|align) is (\w+)'.format(stat_to_optimize), value)
+            for match in conditional_matches:
+                amount, condition_type, condition_value = match
+                if (condition_type == 'class' and condition_value.lower() == selected_class.lower()) or \
+                   (condition_type == 'genre' and condition_value.lower() == selected_genre.lower()) or \
+                   (condition_type == 'align' and condition_value.lower() == selected_align.lower()):
+                    conditional_stat_value += int(amount)
+            
+            # Use the higher of the base stat value or the conditional stat value
+            if conditional_stat_value > 0:
+                stat_value = conditional_stat_value
+            
+            # Add print statements to debug
+            if debug and loc in ['neck1', 'neck2']:
+                print(f"Checking item: {key}")
+                print(f"Stat value for {stat_to_optimize}: {stat_value}")
+                print(f"Best stat value so far: {best_stat_value}")
             
             if stat_value == 0:
                 items_failed_stat += 1
@@ -630,17 +641,18 @@ def optimize_equipment(stat_to_optimize):
             if 'unique' in eqDict[best_item].lower():
                 used_unique_items.add(best_item)
         else:
-            print(f"{loc} error: no items matched")
-            print(f"  Items checked: {items_checked}")
-            print(f"  Items failed wear location: {items_failed_wear}")
-            print(f"  Items failed class restriction: {items_failed_class}")
-            print(f"  Items failed genre restriction: {items_failed_genre}")
-            print(f"  Items failed alignment restriction: {items_failed_align}")
-            print(f"  Items failed race restriction: {items_failed_race}")
-            print(f"  Items failed {stat_to_optimize} stat: {items_failed_stat}")
-            print(f"  Items failed pk filter: {items_failed_pk}")
-            print(f"  Items failed two-handed filter: {items_failed_two_handed}")
-            print(f"  Items failed magic property: {items_failed_magic}")
+            if debug and loc in ['neck1', 'neck2']:
+                print(f"{loc} error: no items matched")
+                print(f"  Items checked: {items_checked}")
+                print(f"  Items failed wear location: {items_failed_wear}")
+                print(f"  Items failed class restriction: {items_failed_class}")
+                print(f"  Items failed genre restriction: {items_failed_genre}")
+                print(f"  Items failed alignment restriction: {items_failed_align}")
+                print(f"  Items failed race restriction: {items_failed_race}")
+                print(f"  Items failed {stat_to_optimize} stat: {items_failed_stat}")
+                print(f"  Items failed pk filter: {items_failed_pk}")
+                print(f"  Items failed two-handed filter: {items_failed_two_handed}")
+                print(f"  Items failed magic property: {items_failed_magic}")
     
     return optimized_equipment
 
