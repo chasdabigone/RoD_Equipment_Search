@@ -182,21 +182,22 @@ def optimize_equipment(stat_to_optimize, debug=False):
             
             class_allowed = True
             genre_allowed = True
-            align_allowed = True
-            race_allowed = True
             
             classes = re.findall(r'Classes allowed:\s*(.*)', value)
             genres = re.findall(r'Genres allowed:\s*(.*)', value)
             
-            if classes and selected_class != "none":
+            if classes and genres:
+                if selected_class.lower() not in classes[0].lower() and selected_genre.lower() not in genres[0].lower():
+                    class_allowed = False
+                    genre_allowed = False
+            elif classes:
                 if selected_class.lower() not in classes[0].lower():
                     class_allowed = False
-            
-            if genres and selected_genre != "none":
+            elif genres:
                 if selected_genre.lower() not in genres[0].lower():
                     genre_allowed = False
             
-            if not class_allowed and not genre_allowed:
+            if not class_allowed or not genre_allowed:
                 items_failed_class += 1
                 continue
             
